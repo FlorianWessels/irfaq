@@ -18,9 +18,9 @@ call_user_func(
         ];
 
         // Core DataHandler hooks for managing related entries
-        $GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][$extensionKey]
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][$extensionKey]
             = \Netcreators\Irfaq\System\Backend\DataHandling\RelatedQuestionsDataHandler::class;
-        $GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'][$extensionKey]
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'][$extensionKey]
             = \Netcreators\Irfaq\System\Backend\DataHandling\RelatedQuestionsDataHandler::class;
 
         // Backend Page Module hook
