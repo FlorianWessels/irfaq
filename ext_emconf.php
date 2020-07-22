@@ -1,15 +1,6 @@
 <?php
 
-/***************************************************************
- * Extension Manager/Repository config file for ext "irfaq".
- *
- * Auto generated 29-09-2016 15:15
- *
- * Manual updates:
- * Only the data in the array - everything else is removed by next
- * writing. "version" and "dependencies" must not be touched!
- ***************************************************************/
-$EM_CONF[$_EXTKEY] = [
+$EM_CONF['irfaq'] = [
     'title' => 'GEN Modern FAQ',
     'description' => 'FAQ frontend plugin with dynamic or static view which will merge and improve functionality of EXT:faq and EXT:faq_plus into a modern look',
     'category' => 'plugin',

@@ -33,8 +33,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * A hook to TCEmain that processes related records.
  *
  * @author    Dmitry Dulepov <dmitry@typo3.org>
- * @package TYPO3
- * @subpackage irfaq
  */
 class RelatedQuestionsDataHandler
 {
@@ -47,11 +45,10 @@ class RelatedQuestionsDataHandler
      *
      * @param    array $incomingFieldArray Field array
      * @param    string $table Table
-     * @param    integer $id UID of the record or 'NEWxxx' string
+     * @param    int $id UID of the record or 'NEWxxx' string
      * @param    \TYPO3\CMS\Core\DataHandling\DataHandler $pObj Reference to TCEmain
-     * @return    void        Nothing
      */
-    function processDatamap_preProcessFieldArray($incomingFieldArray, $table, $id, &$pObj)
+    public function processDatamap_preProcessFieldArray($incomingFieldArray, $table, $id, &$pObj)
     {
         if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_irfaq']['insideTCEmain']) {
             // If we were the source of this call, ignore it
@@ -66,7 +63,6 @@ class RelatedQuestionsDataHandler
             && MathUtility::canBeInterpretedAsInteger($id)
             && isset($incomingFieldArray['related'])
         ) {
-
             $rec = BackendUtility::getRecord($table, $id, 'related');
             $this->saved_related_items = $rec['related'];
         }
@@ -80,9 +76,8 @@ class RelatedQuestionsDataHandler
      * @param    mixed $id UID of the record or 'NEWxxx' string
      * @param    array $fieldArray Added or updated fields
      * @param    \TYPO3\CMS\Core\DataHandling\DataHandler $pObj Reference to TCEmain
-     * @return    void        Nothing
      */
-    function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, &$pObj)
+    public function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, &$pObj)
     {
         if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_irfaq']['insideTCEmain']) {
             // If we were the source of this call, ignore it
@@ -112,9 +107,8 @@ class RelatedQuestionsDataHandler
      * @param    int $id Record uid
      * @param    mixed $value Unused
      * @param    \TYPO3\CMS\Core\DataHandling\DataHandler $pObj Reference to parent object
-     * @return    void        Nothing
      */
-    function processCmdmap_preProcess($command, $table, $id, $value, &$pObj)
+    public function processCmdmap_preProcess($command, $table, $id, $value, &$pObj)
     {
         if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_irfaq']['insideTCEmain']) {
             // If we were the source of this call, ignore it
@@ -134,9 +128,8 @@ class RelatedQuestionsDataHandler
      * @param    int $id Record uid
      * @param    mixed $value Unused
      * @param    \TYPO3\CMS\Core\DataHandling\DataHandler $pObj Reference to parent object
-     * @return    void        Nothing
      */
-    function processCmdmap_postProcess($command, $table, $id, $value, &$pObj)
+    public function processCmdmap_postProcess($command, $table, $id, $value, &$pObj)
     {
         if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_irfaq']['insideTCEmain']) {
             // If we were the source of this call, ignore it
@@ -155,13 +148,12 @@ class RelatedQuestionsDataHandler
     /**
      * Processes related items for current item.
      *
-     * @param    integer $id UID of current record in tx_irfaq_q
+     * @param    int $id UID of current record in tx_irfaq_q
      * @param    string $oldItemList Comma-separated list of items (previous)
      * @param    string $newItemList Comma-separated list of items (new)
      * @param    \TYPO3\CMS\Core\DataHandling\DataHandler $pObj Reference to parent object
-     * @return    void        Nothing
      */
-    function process_relatedItems($id, $oldItemList, $newItemList, $pObj)
+    public function process_relatedItems($id, $oldItemList, $newItemList, $pObj)
     {
         $oldItemList = GeneralUtility::trimExplode(',', $oldItemList, true);
         sort($oldItemList);
@@ -214,4 +206,3 @@ class RelatedQuestionsDataHandler
         }
     }
 }
-

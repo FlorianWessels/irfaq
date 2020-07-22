@@ -45,10 +45,7 @@ use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
  * Plugin 'Simple FAQ' for the 'irfaq' extension.
  *
  * @author    Netcreators <extensions@netcreators.com>
- * @package TYPO3
- * @subpackage irfaq
  */
-
 
 /**
  * Creates a faq list.
@@ -117,7 +114,7 @@ class FaqController extends AbstractPlugin
      *
      * @return    string        $content: output of faq plugin
      */
-    function main($content, $conf)
+    public function main($content, $conf)
     {
         $this->init($conf);
 
@@ -159,7 +156,7 @@ class FaqController extends AbstractPlugin
      *
      * @return    void
      */
-    function init($conf)
+    public function init($conf)
     {
         $this->conf = $conf;
 
@@ -170,7 +167,7 @@ class FaqController extends AbstractPlugin
         $this->initPidList($conf);
 
         // "CODE" decides what is rendered: code can be added by TS or FF with priority on FF
-        $this->showUid = intval($this->piVars['showUid']);
+        $this->showUid = (int)($this->piVars['showUid']);
         if ($this->showUid) {
             $this->conf['code'] = ['SINGLE'];
             $this->conf['categoryMode'] = 0;
@@ -211,7 +208,7 @@ class FaqController extends AbstractPlugin
 
             //set category by $_GET
             if (is_numeric($this->piVars['cat'])) {
-                $this->conf['catExclusive'] = intval($this->piVars['cat']);
+                $this->conf['catExclusive'] = (int)($this->piVars['cat']);
                 $this->conf['categoryMode'] = 1;
             }
 
@@ -242,7 +239,6 @@ class FaqController extends AbstractPlugin
                 $ffEmptySearchAtStart :
                 trim($this->conf['emptySearchAtStart']);
 
-
             // get fieldnames from the tx_irfaq_q db-table
 
             $this->fieldNames = array_keys($this->getListTableColumns('tx_irfaq_q'));
@@ -269,9 +265,8 @@ class FaqController extends AbstractPlugin
             }
         }
 
-       
         $this->templateCode = file_get_contents(GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($this->conf['templateFile']));
-        
+
         $this->initCategories(); // initialize category-array
         $this->initExperts(); // initialize experts-array
 
@@ -298,11 +293,11 @@ class FaqController extends AbstractPlugin
             : $this->getTypoScriptFrontendController()->config['config']['sys_language_overlay'];
 
         //$this->conf['iconPlus'] = $this->getTypoScriptFrontendController()->tmpl->getFileName($this->conf['iconPlus']);
-        
+
         $this->conf['iconPlus'] = file_get_contents(GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($this->conf['iconPlus']));
-        
+
         //$this->conf['iconMinus'] = $this->getTypoScriptFrontendController()->tmpl->getFileName($this->conf['iconMinus']);
-        
+
         $this->conf['iconMinus'] = file_get_contents(GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($this->conf['iconMinus']));
     }
 
@@ -312,7 +307,7 @@ class FaqController extends AbstractPlugin
      *
      * @return    void
      */
-    function initCategories()
+    public function initCategories()
     {
         $rootlineStoragePid = $this->getStorageSiterootPids();
 
@@ -337,7 +332,6 @@ class FaqController extends AbstractPlugin
         $rows = $statement->fetchAll();
 
         foreach ($rows as $row) {
-
             $catTitle = $row['title'];
             $catShortcut = $row['shortcut'];
 
@@ -358,7 +352,7 @@ class FaqController extends AbstractPlugin
      *
      * @return    void
      */
-    function initExperts()
+    public function initExperts()
     {
         // Fetching experts
 
@@ -385,7 +379,7 @@ class FaqController extends AbstractPlugin
      *
      * @return    string        Generated content
      */
-    function searchView()
+    public function searchView()
     {
         $template['total'] = $this->getSubpart($this->templateCode, '###TEMPLATE_SEARCH###');
 
@@ -406,7 +400,7 @@ class FaqController extends AbstractPlugin
      *
      * @return    string        faq list
      */
-    function dynamicView()
+    public function dynamicView()
     {
         $template = [];
         $subpartArray = [];
@@ -423,7 +417,6 @@ class FaqController extends AbstractPlugin
         $subpartArray['###CONTENT###'] = $this->fillMarkers($template['content']);
 
         if (!empty($this->faqCount)) {
-
             $markerArray = [
                 '###HASH###' => $this->hash,
                 '###TOTALCOUNT###' => $this->faqCount,
@@ -450,7 +443,7 @@ class FaqController extends AbstractPlugin
      *
      * @return    string        faq list
      */
-    function staticView()
+    public function staticView()
     {
         $templateName = 'TEMPLATE_STATIC';
 
@@ -475,7 +468,6 @@ class FaqController extends AbstractPlugin
         return $content;
     }
 
-
     /**
      * Replaces markers with content
      *
@@ -483,7 +475,7 @@ class FaqController extends AbstractPlugin
      *
      * @return    string        template with substituted markers
      */
-    function fillMarkers($template)
+    public function fillMarkers($template)
     {
         $content = '';
 
@@ -499,7 +491,6 @@ class FaqController extends AbstractPlugin
 
         $i = 1;
         foreach ($rows as $row) {
-
             $markerArray = $this->fillMarkerArrayForRow($row, $i);
             $markerArray['###FAQ_ID###'] = $row['uid'];
             $markerArray['###COUNT###'] = $i++;
@@ -521,7 +512,7 @@ class FaqController extends AbstractPlugin
      *
      * @return    array        $markerArray: filled markerarray
      */
-    function getCatMarkerArray($markerArray, $row)
+    public function getCatMarkerArray($markerArray, $row)
     {
         // clear the category text marker if the FAQ item has no categories
         $markerArray['###FAQ_CATEGORY###'] = '';
@@ -529,7 +520,6 @@ class FaqController extends AbstractPlugin
 
         $faq_category = [];
 
-       
         if (GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('workspace', 'id') && $row['_ORIG_uid'] > 0) {
             $row['uid'] = $row['_ORIG_uid'];
         }
@@ -581,7 +571,7 @@ class FaqController extends AbstractPlugin
      *
      * @return array the selectconf for the display of a news item, and sorting statement used
      */
-    function getSelectConfQuery()
+    public function getSelectConfQuery()
     {
 
         /** @var QueryBuilder $queryBuilder */
@@ -592,48 +582,57 @@ class FaqController extends AbstractPlugin
             GeneralUtility::makeInstance(FrontendWorkspaceRestriction::class, $this->getCurrentWorkspaceId())
         );
 
-        $where = "1=1";//. $this->addWorkspaceRestriction();
+        $where = '1=1';//. $this->addWorkspaceRestriction();
 
         $queryBuilder->selectLiteral('DISTINCT tx_irfaq_q.uid, tx_irfaq_q.pid, 
         tx_irfaq_q.q, tx_irfaq_q.q_from, tx_irfaq_q.a, tx_irfaq_q.cat, tx_irfaq_q.expert, tx_irfaq_q.related, 
         tx_irfaq_q.related_links, tx_irfaq_q.enable_ratings, tx_irfaq_q.sys_language_uid, tx_irfaq_q.l18n_parent, tx_irfaq_q.l18n_diffsource, tx_irfaq_q.sorting');
 
-        $queryBuilder->from("tx_irfaq_q");
+        $queryBuilder->from('tx_irfaq_q');
 
         $queryBuilder->where($where);
 
-
         if ((int)$this->conf['faqListRespectSysLanguageUid']) {
             $queryBuilder->andWhere(
-                $queryBuilder->expr()->eq('tx_irfaq_q.sys_language_uid',
-                    $queryBuilder->createNamedParameter((int)$this->getTypoScriptFrontendController()->config['config']['sys_language_uid'],
-                        \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq(
+                    'tx_irfaq_q.sys_language_uid',
+                    $queryBuilder->createNamedParameter(
+                        (int)$this->getTypoScriptFrontendController()->config['config']['sys_language_uid'],
+                        \PDO::PARAM_INT
+                    )
+                )
             );
         }
 
-        
         if (GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('workspace', 'id') > 0) {
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->eq('t3ver_wsid',
-                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
-                    $queryBuilder->expr()->eq('t3ver_wsid',
-                        $queryBuilder->createNamedParameter(GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('workspace', 'id'),
-                            \PDO::PARAM_INT)))
+                    $queryBuilder->expr()->eq(
+                        't3ver_wsid',
+                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        't3ver_wsid',
+                        $queryBuilder->createNamedParameter(
+                            GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('workspace', 'id'),
+                            \PDO::PARAM_INT
+                        )
+                    )
+                )
             );
         }
 
         //build SQL on condition of categoryMode
         if ($this->conf['categoryMode'] == 1 && trim($this->conf['catExclusive']) != '') {
-
-            $queryBuilder->leftJoin('tx_irfaq_q', 'tx_irfaq_q_cat_mm', 'tx_irfaq_q_cat_mm',
-                ' tx_irfaq_q.uid = tx_irfaq_q_cat_mm.uid_local');
+            $queryBuilder->leftJoin(
+                'tx_irfaq_q',
+                'tx_irfaq_q_cat_mm',
+                'tx_irfaq_q_cat_mm',
+                ' tx_irfaq_q.uid = tx_irfaq_q_cat_mm.uid_local'
+            );
             $queryBuilder->andWhere('(IFNULL(tx_irfaq_q_cat_mm.uid_foreign,0) IN (' . $this->conf['catExclusive'] . '))');
-
         } elseif ($this->conf['categoryMode'] == -1) {
-
             $joinCondition = '(tx_irfaq_q.uid = tx_irfaq_q_cat_mm.uid_local AND (tx_irfaq_q_cat_mm.uid_foreign=';
-
 
             //multiple categories selected?
             if (strpos($this->conf['catExclusive'], ',')) {
@@ -670,7 +669,6 @@ class FaqController extends AbstractPlugin
         $sorting = $this->conf['orderBy'] ? 'tx_irfaq_q.' . $this->conf['orderBy'] : 'tx_irfaq_q.sorting';
         $queryBuilder->orderBy($sorting);
 
-
         $queryBuilder->andWhere(" pid in ('" . $this->conf['pidList'] . "')");
 
         return [$queryBuilder, $sorting];
@@ -683,7 +681,7 @@ class FaqController extends AbstractPlugin
      *
      * @return    string        querypart
      */
-    function searchWhere($searchWords)
+    public function searchWhere($searchWords)
     {
         $where = $this->cObj->searchWhere($searchWords, $this->searchFieldList, 'tx_irfaq_q');
         return $where;
@@ -696,7 +694,7 @@ class FaqController extends AbstractPlugin
      *
      * @return    string        wrapped string
      */
-    function formatStr($str)
+    public function formatStr($str)
     {
         if (is_array($this->conf['general_stdWrap.']) || count($this->conf['general_stdWrap.']) > 0) {
             $str = $this->cObj->stdWrap(
@@ -715,7 +713,7 @@ class FaqController extends AbstractPlugin
      *
      * @return    string        the list of validated fields
      */
-    function validateFields($fieldlist)
+    public function validateFields($fieldlist)
     {
         $checkedFields = [];
         $fArr = GeneralUtility::trimExplode(',', $fieldlist, 1);
@@ -735,14 +733,14 @@ class FaqController extends AbstractPlugin
      *
      * @return    string        Generated HTML or empty string if no related entries
      */
-    function getRelatedEntries($list)
+    public function getRelatedEntries($list)
     {
         $content = '';
         $list = GeneralUtility::trimExplode(',', $list, true); // Have to do that because there can be empty elements!
         if (count($list)) {
             //danilo
             //$rows = $this->getQuestionsByUids($list);
-            $rows = $this->getQuestionsByUids($list,'sorting');
+            $rows = $this->getQuestionsByUids($list, 'sorting');
 
             if (is_array($rows)) {
                 $template = $this->getSubpart($this->templateCode, '###TEMPLATE_RELATED_FAQ###');
@@ -783,7 +781,7 @@ class FaqController extends AbstractPlugin
      *
      * @return    string        Generated HTML or empty string if no related links
      */
-    function getRelatedLinks($list)
+    public function getRelatedLinks($list)
     {
         $content = '';
         $list = GeneralUtility::trimExplode(
@@ -819,7 +817,7 @@ class FaqController extends AbstractPlugin
      * @return    array        Generated marker array
      * @see    fillMarkers()
      */
-    function fillMarkerArrayForRow(&$row, $i)
+    public function fillMarkerArrayForRow(&$row, $i)
     {
         $markerArray = [];
 
@@ -940,13 +938,13 @@ class FaqController extends AbstractPlugin
      *
      * @return    string        Generated content
      */
-    function singleView()
+    public function singleView()
     {
 
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_irfaq_q');
 
-        $where = "1=1" . $this->addWorkspaceRestriction();
+        $where = '1=1' . $this->addWorkspaceRestriction();
 
         $queryBuilder
             ->select('*')
@@ -954,7 +952,7 @@ class FaqController extends AbstractPlugin
             ->where(
                 $where
             )
-            ->andWhere($queryBuilder->expr()->eq('uid', intval($this->showUid)));
+            ->andWhere($queryBuilder->expr()->eq('uid', (int)($this->showUid)));
 
         $statement = $queryBuilder->execute();
 
@@ -987,7 +985,7 @@ class FaqController extends AbstractPlugin
      *
      * @return string Generated FAQ list
      */
-    function staticSeparateView()
+    public function staticSeparateView()
     {
         $template_sub = $this->getSubpart($this->templateCode, '###TEMPLATE_STATIC_SEPARATE###');
         $template = $this->getSubpart($template_sub, '###QUESTIONS###');
@@ -1002,7 +1000,7 @@ class FaqController extends AbstractPlugin
      *
      * @return    string    Generated ratings
      */
-    function getRatingForRow($row)
+    public function getRatingForRow($row)
     {
         $result = '';
         if ($row['enable_ratings'] && $this->conf['enableRatings']) {
@@ -1025,7 +1023,7 @@ class FaqController extends AbstractPlugin
      *
      * @return    mixed    Row or false if not found and no fallbacks available
      */
-    function getLanguageOverlay($table, $row)
+    public function getLanguageOverlay($table, $row)
     {
         foreach ($this->content_languages as $language) {
             if (($result = $this->getTypoScriptFrontendController()->sys_page->getRecordOverlay(
@@ -1120,8 +1118,12 @@ class FaqController extends AbstractPlugin
         array $wrappedSubpartContentArray = null
     ) {
         $templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
-        return $templateService->substituteMarkerArrayCached($content, $markContentArray, $subpartContentArray,
-            $wrappedSubpartContentArray);
+        return $templateService->substituteMarkerArrayCached(
+            $content,
+            $markContentArray,
+            $subpartContentArray,
+            $wrappedSubpartContentArray
+        );
     }
 
     /**
@@ -1129,7 +1131,7 @@ class FaqController extends AbstractPlugin
      */
     protected function initPidList($conf): void
     {
-// pidList is the pid/list of pids from where to fetch the faq items.
+        // pidList is the pid/list of pids from where to fetch the faq items.
         $ffPidList = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'pages');
         $pidList = $ffPidList ?
             $ffPidList :
@@ -1142,7 +1144,6 @@ class FaqController extends AbstractPlugin
         $this->conf['pidList'] = $pidList ?
             implode(GeneralUtility::intExplode(',', $pidList), ',') :
             $this->getTypoScriptFrontendController()->id;
-
 
         //get items recursive
         $recursive = $this->pi_getFFvalue(
@@ -1160,7 +1161,7 @@ class FaqController extends AbstractPlugin
     }
 
     protected function getCurrentWorkspaceId()
-    {   
+    {
         return GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('workspace', 'id');
     }
 

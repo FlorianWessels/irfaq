@@ -29,13 +29,10 @@ namespace Netcreators\Irfaq\System\Backend\PageModule;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-
 /**
  * Hook to display verbose information about pi1 plugin in Web>Page module
  *
  * @author    Dmitry Dulepov <dmitry@typo3.org>
- * @package    TYPO3
- * @subpackage    tx_irfaq
  */
 class ExtensionSummaryProvider
 {
@@ -46,7 +43,7 @@ class ExtensionSummaryProvider
      * @param    object $pObj A reference to calling object
      * @return    string        Information about pi1 plugin
      */
-    function getExtensionSummary(array $params, &$pObj)
+    public function getExtensionSummary(array $params, &$pObj)
     {
         $languageService = $this->getLanguageService();
         $result = '';
@@ -56,10 +53,10 @@ class ExtensionSummaryProvider
             if (is_array($data)) {
                 $modes = [];
                 foreach (GeneralUtility::trimExplode(
-                             ',',
-                             $data['data']['sDEF']['lDEF']['what_to_display']['vDEF'],
-                             true
-                         ) as $mode) {
+                    ',',
+                    $data['data']['sDEF']['lDEF']['what_to_display']['vDEF'],
+                    true
+                ) as $mode) {
                     switch ($mode) {
                         case 'DYNAMIC':
                             $modes[] = $languageService->sL(
@@ -97,5 +94,3 @@ class ExtensionSummaryProvider
         return $GLOBALS['LANG'];
     }
 }
-
-
