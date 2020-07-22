@@ -1,24 +1,38 @@
 {
-	"name" : "proudnerds-typo3/irfaq",
-	"type" : "typo3-cms-extension",
-	"description" : "FAQ frontend plugin with dynamic or static view",
-	"authors" : [{
-			"name" : "Netcreators",
-			"role" : "Developer"
-		}
-	],
-	"require" : {
-		"typo3/cms-core" : "^9.5 | ^10.4"
-	},
-    "license": ["GPL-2.0-or-later"],
-	"autoload" : {
-		"psr-4" : {
-			"Netcreators\\Irfaq\\" : "Classes"
-		}
-	},
-	"config" : {
-		"optimize-autoloader" : true,
-		"vendor-dir" : ".build/vendor",
-		"bin-dir" : ".build/bin"
-	}
+    "name": "proudnerds-typo3/irfaq",
+    "description": "FAQ frontend plugin with dynamic or static view",
+    "type": "typo3-cms-extension",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Netcreators",
+            "role": "Developer"
+        },
+        {
+            "name": "Florian Wessels",
+            "email": "f.wessels@Leuchtfeuer.com",
+            "role": "Developer",
+            "homepage": "https://www.Leuchtfeuer.com"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/proudnerds-typo3/irfaq/issues",
+        "source": "https://github.com/proudnerds-typo3/irfaq"
+    },
+    "require": {
+        "typo3/cms-core": "^9.5.17 || ^10.4.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Netcreators\\Irfaq\\": "Classes"
+        }
+    },
+    "replace": {
+        "typo3-ter/irfaq": "self.version"
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "auth0"
+        }
+    }
 }
