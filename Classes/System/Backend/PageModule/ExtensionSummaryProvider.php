@@ -25,6 +25,8 @@ namespace Netcreators\Irfaq\System\Backend\PageModule;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 
@@ -44,9 +46,8 @@ class ExtensionSummaryProvider
      * @param    object $pObj A reference to calling object
      * @return    string        Information about pi1 plugin
      */
-    function getExtensionSummary($params, &$pObj)
+    function getExtensionSummary(array $params, &$pObj)
     {
-
         $languageService = $this->getLanguageService();
         $result = '';
 
@@ -91,10 +92,7 @@ class ExtensionSummaryProvider
         return $result;
     }
 
-    /**
-     * @return \TYPO3\CMS\Lang\LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

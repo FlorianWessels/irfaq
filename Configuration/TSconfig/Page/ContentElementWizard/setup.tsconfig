@@ -1,0 +1,14 @@
+mod.wizards.newContentElement.wizardItems.forms {
+    show := addToList(plugins_tx_irfaq_pi1)
+    elements {
+        plugins_tx_irfaq_pi1 {
+            iconIdentifier = tcarecords-pages-contains-irfaq
+            title = LLL:EXT:irfaq/Resources/Private/Language/locallang.xlf:pi1_title_irfaq
+            description = LLL:EXT:irfaq/Resources/Private/Language/locallang.xlf:pi1_plus_wiz_description_irfaq
+            tt_content_defValues {
+                CType = list
+                list_type = irfaq_pi1
+            }
+        }
+    }
+}
